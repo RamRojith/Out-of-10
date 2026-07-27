@@ -272,4 +272,87 @@
     });
   });
 
+  /* ══════════════════════════════════════════
+     BEAMS BACKGROUND ANIMATION
+     ══════════════════════════════════════════ */
+  const beamsCanvas = document.getElementById('beamsCanvas');
+  if (beamsCanvas) {
+    const ctx = beamsCanvas.getContext('2d');
+    const SIZE = 1080;
+    beamsCanvas.width = SIZE;
+    beamsCanvas.height = SIZE;
+
+    const BEAM_COUNT = 12;
+    const BEAM_WIDTH = 2;
+    const BEAM_HEIGHT = SIZE * 0.15;
+    const LIGHT_COLOR = '#dca806';
+    const SPEED = 2;
+    const NOISE_INTENSITY = 1.75;
+    const SCALE = 0.2;
+    const CENTER = SIZE / 2;
+
+    let rotation = 0;
+    let animFrame;
+
+    // Simplex-like noise function
+    function noise(x, y, t) {
+      return Math.sin(x * 12.9898 + y * 78.233 + t) * 43758.5453 % 1;
+    }
+
+    function drawBeam(angle, alpha) {
+      ctx.save();
+      ctx.translate(CENTER, CENTER);
+      ctx.rotate(angle);
+
+      const gradient = ctx.createLinearGradient(0, 0, 0, -BEAM_HEIGHT);
+      gradient.addColorStop(0, `rgba(220, 168, 6, ${alpha * 0.8})`);
+      gradient.addColorStop(0.3, `rgba(220, 168, 6, ${alpha * 0.4})`);
+      gradient.addColorStop(1, 'rgba(220, 168, 6, 0)');
+
+      ctx.fillStyle = gradient;
+      ctx.fillRect(-BEAM_WIDTH / 2, -BEAM_HEIGHT, BEAM_WIDTH, BEAM_HEIGHT);
+
+      ctx.restore();
+    }
+
+    function render(time) {
+      ctx.clearRect(0, 0, SIZE, SIZE);
+
+      const t = time * 0.001 * SPEED;
+      rotation = t * 0.3;
+
+      // Draw each beam
+      for (let i = 0; i < BEAM_COUNT; i++) {
+        const baseAngle = (i / BEAM_COUNT) * Math.PI * 2 + rotation;
+        const noiseVal = Math.abs(noise(i * 0.5, 0, t * 0.5));
+        const alpha = (0.15 + noiseVal * 0.25 * NOISE_INTENSITY) * SCALE * 5;
+        const angleOffset = Math.sin(t * 0.8 + i) * 0.05;
+
+        drawBeam(baseAngle + angleOffset, alpha);
+      }
+
+      // Central glow
+      const glowGrad = ctx.createRadialGradient(CENTER, CENTER, 0, CENTER, CENTER, 200);
+      glowGrad.addColorStop(0, 'rgba(220, 168, 6, 0.08)');
+      glowGrad.addColorStop(1, 'rgba(220, 168, 6, 0)');
+      ctx.fillStyle = glowGrad;
+      ctx.fillRect(0, 0, SIZE, SIZE);
+
+      animFrame = requestAnimationFrame(render);
+    }
+
+    // Only animate when hero is visible
+    const heroObserver = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          animFrame = requestAnimationFrame(render);
+        } else {
+          cancelAnimationFrame(animFrame);
+        }
+      });
+    }, { threshold: 0.1 });
+
+    heroObserver.observe(document.querySelector('.hero'));
+  }
+
 })();
