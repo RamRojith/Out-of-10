@@ -149,7 +149,7 @@
 .team-card:hover,
 .info-card:hover {
   box-shadow: 0 12px 40px rgba(0, 0, 0, 0.3),
-              0 0 0 1px rgba(201, 168, 76, 0.1);
+              0 0 0 1px rgba(201, 162, 75, 0.1);
 }
 
 /* ── TEAM AVATAR GRADIENT SHIMMER ── */
@@ -168,7 +168,7 @@
   background: linear-gradient(
     90deg,
     transparent 0%,
-    rgba(201, 168, 76, 0.06) 50%,
+    rgba(201, 162, 75, 0.06) 50%,
     transparent 100%
   );
   transform: rotate(25deg);
@@ -273,7 +273,7 @@
   left: 50%;
   width: 500px;
   height: 500px;
-  background: radial-gradient(circle, rgba(201, 168, 76, 0.06) 0%, transparent 70%);
+  background: radial-gradient(circle, rgba(201, 162, 75, 0.06) 0%, transparent 70%);
   border-radius: 50%;
   transform: translate(-50%, -50%);
   animation: ctaGlow 6s ease-in-out infinite alternate;
@@ -297,7 +297,7 @@
 .form-group input:focus,
 .form-group textarea:focus,
 .form-group select:focus {
-  box-shadow: 0 0 0 3px rgba(201, 168, 76, 0.12);
+  box-shadow: 0 0 0 3px rgba(201, 162, 75, 0.12);
 }
 
 /* ── PROBLEM ITEM SLIDE ── */
@@ -309,7 +309,7 @@
 
 .problem-item:hover {
   transform: translateX(8px);
-  box-shadow: -4px 0 20px rgba(201, 168, 76, 0.08);
+  box-shadow: -4px 0 20px rgba(201, 162, 75, 0.08);
 }
 
 /* ── BIG NUMBER PARALLAX ── */
